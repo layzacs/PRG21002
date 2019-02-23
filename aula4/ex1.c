@@ -3,23 +3,16 @@
 main()
 {
   // Declaring variables
-  int R1,R2;
-  float serie,paralelo;
-  // Input values for R1 e R2
-  printf("Entre com R1\n");
-  scanf("%f", &R1);
-  printf("Entre com R2\n");
-  scanf("%f", &R2);
-
+  float r1,r2,serie,paralelo;
+  // Input values for r1 e r2
+  printf("Entre com r1:\n");
+  scanf("%f",&r1);
+  printf("Entre com r2:\n");
+  scanf("%f",&r2);
   // Calculating serie
-
-  serie=R1+R2
-
+  serie = r1+r2;
   // Calculating paralel
-
-  paralelo=(R1*R2)/(R1+R2)
-
-  printf ("O valor da série é %d\n",serie);
-  printf ("O valor de x é %d\n",paralelo);
-
+  paralelo = (r1*r2)/(r1+r2);
+  printf ("O valor da série é %f\n",serie);
+  printf ("O valor de x é %f\n",paralelo);
 }
