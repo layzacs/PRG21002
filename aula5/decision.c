@@ -15,7 +15,8 @@ main()
      printf("MSG1: y é maior que x\n");
      z = y-x;
      printf("MSG2: Neste caso z =  %d\n", z);
-  } else {
+  } 
+  else {
      printf("MSG3: y é igual ou menor que x\n");
      z = x-y;
      printf("MSG4: Neste caso z =  %d\n", z);
