@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 main () {
   float r1, r2, a, b, c, delta;
@@ -18,14 +19,14 @@ main () {
   if (delta == 0) {
     r1 = (-b)/(2*a);
     r2 = r1;
-    printf("A equação possui duas raízes iguais: %f\n", r2)
+    printf("A equação possui duas raízes iguais: %f\n", r2);
   }
   else if (delta < 0) {
-    printf("Esta equação não possui raíses reais!\n");
+    printf("Esta equação não possui raizes reais.\n");
   }
   else {
-    r1 = ((-b)+delta)/(2*a);
-    r2 = ((-b)-delta)/(2*a);
+    r1 = ((-b)+sqrt(delta))/(2*a);
+    r2 = ((-b)-sqrt(delta))/(2*a);
     printf("As raízes da equação são %f (r1) e %f (r2)\n", r1, r2);
   }
 }
