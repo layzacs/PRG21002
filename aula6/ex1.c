@@ -32,7 +32,7 @@ main() {
     for (i=0;i<margem;i++) {
       printf(" ");
     }
-    if (
+    if (colunas
 
 //    for (i=0;i<colunas;i++) {
 //      if (i==0 && i==colunas) {
