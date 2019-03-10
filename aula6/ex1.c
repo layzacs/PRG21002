@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-main() {
+int main() {
   int i,j,margem,linhas_vazadas,colunas;
   char caracter;
   
@@ -26,31 +26,30 @@ main() {
   printf("\n");
 
   // Cast lines (in-between)
-
+  
   for (j=0;j<(linhas_vazadas-2);j++) {
     // Adicionando novamente margem
     for (i=0;i<margem;i++) {
       printf(" ");
     }
-    if (colunas
-
-//    for (i=0;i<colunas;i++) {
-//      if (i==0 && i==colunas) {
-//        printf("%c", caracter);
-//      }
-//      else {
-//        printf(" ");
-//      }
-//    }
-//    printf("\n");
-//  }
+    for (i=0;i<colunas;i++) {
+      if (i==0 || i==(colunas-1)) {
+        printf("%c", caracter);
+      }
+      else {
+        printf(" ");
+      }
+    }
+    printf("\n");
+  }
 
 // Last line
-  for (i=0;i<margem;i++) {
+  for(i=0;i<margem;i++) {
     printf(" ");
   }  
   for (i=0;i<colunas;i++) {
     printf("%c", caracter);
   }
   printf("\n");
+
 }
