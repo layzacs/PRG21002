@@ -2,54 +2,52 @@
 
 #include <stdio.h>
 
-int  main () {
+float main () {
 
-  int i=1,nresist,j,req,resist,operacao;
+  int i=1,nresist,operacao;
+  // Estas variáveis precisam ser float porque estamos mexendo com números não inteiros (1/qualquercoisa).
+  float req=0,resist=0,j;
+
+  // Primeiros passos: Definir qual serã a operação e quantos resistores possuem o circuito.
   printf("Insira 1 para calcular resistências em paralelo:\nInsira 2 para calcular resistências em série:\n");
   scanf("%d", &operacao);
+  printf("Quantos resistores o circuito possui?\n");
+  scanf("%d", &nresist);
 
   switch(operacao) {
-    // Case 1: Para quando for um circuito paralelo. Dentro do case 1, será lida a quantidade de resistores total do circuito.
-    // Um looping é criado e se repetirá um número de vezes igual ao número de resistores do circuito.
-    // Para cada novo valor de resistor adicionado, 1/resistor será somado ao valor de req atual.
+    // Case 1: Para quando for um circuito paralelo.
+    // Para cada novo valor de resistor adicionado, "1/resistor" será somado a variável resist. A req será igual a 1 dividido pela soma de cada "1/resistor".
     case 1:
-      i=1;
-      printf("Quantos resistores são?");
-      scanf("%d", &nresist);
-
       while (i <= nresist) {
-        printf("Insira o resistor n° %d:\n", i);
-        scanf("%d", &j);
+        printf("Insira o resistor n° %d: (ohms).\n", i);
+        scanf( "%f", &j);
 
-        if (nresist=1) {
+        if (nresist==1) {
           printf("O circuito só tem um resistor.\n");
-          resist = j;
-          break;
-        }
-
-        j = 1/j;
-
-        resist = resist+j;
-        i = i+1;
-      }
-      req = 1/resist;
-      printf("A resistência equivalente do circuito é: %d\n", req);
-
-    case 2:
-      printf("Quantos resistores são?");
-      scanf("%d", &nresist);
-
-      while (i<=nresist) {
-        printf("Insira o resistor n° %d:\n", i);
-        scanf("%d", &j);
-
-        if (nresist=1) {
           req = j;
           break;
         }
-        req = req+j;
-        i = i+1;
+        else {
+          j = 1/j;
+          resist = resist+j;
+          req = 1/resist;
+          i++;
+
         }
-        printf("A resistência equivalente é %d\n", req);
+      }
+      printf("A resistência equivalente é %.2f (ohms).\n", req);
+      break;
+
+    // Caso 2: Quando o circuito for em série, a resistência equivalente será a soma de todos os nresistores inseridos.
+    // Um looping é criado e se repetirá um número de vezes igual ao número de resistores do circuito.
+    case 2:
+      while (i<=nresist) {
+        printf("Insira o resistor n° %d: (ohms).\n", i);
+        scanf("%f", &j);
+        req = req+j;
+        i++;
+      }
+      printf("A resistência equivalente é %.2f (ohms).\n", req);
+      break;
   }
 }
