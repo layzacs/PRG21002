@@ -1,4 +1,4 @@
-// 3. Ainda sobre o exercício 1, implemente uma versão usando o comando while().
+// // 4. Ainda sobre o exercício 1, implemente uma versão usando loop infinito e o comando break;
 
 #include <stdio.h>
 
@@ -10,7 +10,9 @@ int main () {
       soma = soma+i;
     }
     i++;
-    if (i==500)
+    if (i==500) {
+      break;
+    }
   }
   printf("A soma de todos os números ímpares e múltiplos de três do intervao 1 a 500 é: %d\n", soma);
 }
