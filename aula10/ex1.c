@@ -10,7 +10,7 @@ int main(void) {
   printf("A string é %s\n", n);
   printf ("%c\n", n[1]);
   printf ("%c\n", n[4]);
-  for (i=4; i<0; i--) {
+  for (i=4; i>0; i--) {
     printf("Valor do elemento %d da string: %c\n", i, n[i]);
     printf("O loop está em andamento.\n");
   }
