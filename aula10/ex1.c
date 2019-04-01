@@ -2,7 +2,7 @@
 
 int main(void) {
 
-  int i,valor;
+  int i;
   char n[5];
 
   printf("Digite 5 números:\n");
