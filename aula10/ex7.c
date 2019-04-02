@@ -6,10 +6,10 @@ int main () {
   char primeira[40], segunda[40];
 
   printf("Entre com a cadeia número 1:\n");
-  scanf(" %[^\n]s", primeira);
+  scanf(" %s", primeira);
 
   printf("Entre com a cadeia número 2:\n");
-  scanf(" %[^\n]s", segunda);
+  scanf(" %s", segunda);
 
   printf("As cadeias são: %s e %s\n", primeira, segunda);
 
