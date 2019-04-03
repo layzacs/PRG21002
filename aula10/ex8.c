@@ -1,23 +1,24 @@
 // 8. Elaborar uma função para copiar uma string que está em um vetor de char para outro vetor. Fazer um exemplo de uso no main.
 #include <stdio.h>
 
-char copia_string(string_inicial) {
-  char string_copia[20];
-  int i;
+char* copia_string(char fonte[]) {
   
-  for (i=0;(string_inicial[i]!=0);i++) {
-    string_copia[i]=string_inicial[i];
+  int i;
+  char saida[20];
+
+  for (i=0;(fonte[i]!=0);i++) {
+    saida[i]=fonte[i];
   } 
-  return string_copia;
+  return saida;
 }
 
-void main () {
+int main () {
   
-  char string[20];
+  char string_inicial[20];
   
   printf("Insira a string que será copiada:\n");
-  scanf("%s\n", string);
+  scanf("%s\n", string_inicial);
 
-  printf("A cópia da string em um outro vetor é: %s\n", copia_string(string));
+  printf("A cópia da string em um outro vetor é: %s\n", copia_string(string_inicial));
 
 }
