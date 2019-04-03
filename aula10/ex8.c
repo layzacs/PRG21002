@@ -9,6 +9,7 @@ char* copia_string(char fonte[]) {
   for (i=0;(fonte[i]!=0);i++) {
     saida[i]=fonte[i];
   } 
+  printf("vetor copiado: %s\n", saida);
   return saida;
 }
 
@@ -19,6 +20,7 @@ int main () {
   printf("Insira a string que será copiada:\n");
   scanf("%s\n", string_inicial);
 
-  printf("A cópia da string em um outro vetor é: %s\n", copia_string(string_inicial));
+  printf("%s\n", string_inicial);
+//  printf("A cópia da string em um outro vetor é: %s\n", copia_string(string_inicial));
 
 }
