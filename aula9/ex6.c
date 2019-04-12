@@ -4,22 +4,22 @@
 #include <time.h>
 
 
-int vetRnd[10];
+int vetRnd[100];
 
-int randomizer(int vetor[10]) {
+int randomizer(int vetor[100]) {
   int i=0, var;
   
-  for (i=0;i<10;i++) {
-    srand ( time(NULL) );
-    /* generate secret number: */
+  for (i=0;i<100;i++) {
+
     vetor[i] = 1 + (rand() % 6);
     var = rand() % 6;
-    printf("%d\n", var);
     printf("vetor[%d]= %d\n", i, vetor[i]);
   }
 }
 
 int main(void) {
+
+  srand ( time(NULL) );
 
   randomizer(vetRnd);
 
