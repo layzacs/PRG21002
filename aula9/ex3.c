@@ -4,18 +4,20 @@
 
 int main(void) {
 
-  int vet[10],total, soma=0, i;
+  int vet[10],total, soma=0, i=0, n=0;
   
-  for (i=0;i<10;i++) {
+  while (i<10) {
   printf("Insira o valor de vet[%d]:\n", i);
   scanf("%d", &vet[i]);
   soma=soma+vet[i];
+  i++;
   }
-  for (i=0;i<10;i++) {
-    if ((soma/10)<vet[i]) {
+  while (n<10) {
+    if ((soma/10)<vet[n]) {
       total++;
+  
     }
+    n++;
   }
   printf("A quantidade de numeros maiores que a média é: %d\n", total);
-
 }
