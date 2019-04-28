@@ -21,8 +21,6 @@ int copia_string(char alfa[], char beta[]) {
   // O valor de k corresponde ao tamanho da string inicial menos 1, porque por ex. uma string de tamanho 4 vai de 0 a 3.
   k = (len - 1);
 
-  printf("valor de k é %d\n", k);
-
   for (i=0;i<len;i++) {
     printf("vetA[i] = %c\n", alfa[i]);
     beta[k] = alfa[i];
