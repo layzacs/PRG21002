@@ -3,15 +3,15 @@
 #include <stdio.h>
 #include <string.h>
 
-// Função ilustrativa
-
+// Método para desbloquear um usuário bloqueado.
 int desbloqueia_user(char tab_users[4][10], int bloqueio[4]) {
   int i;
   char j;
   for (i=0;i<4;i++) {
     if (bloqueio[i] == 3) {
       printf("O usuário %s está bloqueado. Deseja desbloquear? (S/N)\n", tab_users[i]);
-      scanf("%c\n", &j);
+      scanf(" %c", &j);
+      printf("j = %c\n", j);
       if (j == 'S') {
         bloqueio[i] = 0;
       }
@@ -21,15 +21,18 @@ int desbloqueia_user(char tab_users[4][10], int bloqueio[4]) {
   return bloqueio;
 }
 
+// Método ilustrativo
 void open_door() {
   printf("A porta foi aberta.\n");
 }
+
 
 int teste_usuario(char tab_users[4][10], char tab_senhas[4][10]) {
   int broke=0, i=0;
   int bloqueio[4]={0,0,0,0};
   char user[10], passwd[10];
 
+  // Loop infinito, só será quebrado caso seja inserido usuário e senha válidos ou seja digitado fim
   for (;;) {
 
     if (broke == 1)
@@ -37,7 +40,6 @@ int teste_usuario(char tab_users[4][10], char tab_senhas[4][10]) {
 
     printf("Usuário:\n");
     scanf("%s", user);
-    // printf("usuário= %s\n", user);
 
     if ((user[0] == 'f') && (user[1] == 'i') && (user[2] == 'm') && (user[3] == 0)) {
       break;
