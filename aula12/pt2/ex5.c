@@ -4,6 +4,23 @@
 #include <string.h>
 
 // Função ilustrativa
+
+int desbloqueia_user(char tab_users[4][10], int bloqueio[4]) {
+  int i;
+  char j;
+  for (i=0;i<4;i++) {
+    if (bloqueio[i] == 3) {
+      printf("O usuário %s está bloqueado. Deseja desbloquear? (S/N)\n", tab_users[i]);
+      scanf("%c\n", &j);
+      if (j == 'S') {
+        bloqueio[i] = 0;
+      }
+    }
+  }
+  printf("Desconectando do modo admin...\n");
+  return bloqueio;
+}
+
 void open_door() {
   printf("A porta foi aberta.\n");
 }
@@ -20,7 +37,7 @@ int teste_usuario(char tab_users[4][10], char tab_senhas[4][10]) {
 
     printf("Usuário:\n");
     scanf("%s", user);
-
+    // printf("usuário= %s\n", user);
 
     if ((user[0] == 'f') && (user[1] == 'i') && (user[2] == 'm') && (user[3] == 0)) {
       break;
@@ -31,7 +48,7 @@ int teste_usuario(char tab_users[4][10], char tab_senhas[4][10]) {
 
     if ((strcmp(user, "admin") == 0) && (strcmp(passwd, "admin") == 0)) {
       printf("Bem vindo administrador.\n");
-      admin();
+      desbloqueia_user(tab_users, bloqueio);
     }
 
     for (i=0;i<4;i++) {
