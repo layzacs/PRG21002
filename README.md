@@ -6,6 +6,7 @@ Conteúdo e exercícios da disciplina de PRG29002 (Programação 1) do curso de 
 ### Linguagem C:
 - Estruturas de Decisão
 - Estruturas de Repetição
+- Funções, vetores, strings, matrizes e mais
 
 
 ## Páginas contendo as aulas:
