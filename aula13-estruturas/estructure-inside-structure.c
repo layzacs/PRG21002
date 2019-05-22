@@ -8,6 +8,7 @@ struct TEndereco{
 struct TCidadao{
   char nome[50];
   char cpf[20];
+  // a variável de posição 3 de dentro da estrutura TCidadao é também uma variável do tipo estrutura.
   struct TEndereco endereco;
   int num_filhos;
 };
