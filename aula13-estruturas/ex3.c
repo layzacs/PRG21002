@@ -12,11 +12,9 @@ struct num_complex {
 };
 
 
-struct soma_mat_complex(struct num_complex x, struct num_complex y) {
+float soma_mat_complex(struct num_complex x, struct num_complex y) {
 
 }
-
-
 
 
 int main (void) {
