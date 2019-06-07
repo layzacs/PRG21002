@@ -4,7 +4,7 @@
 struct num_complexo {
   int real;
   int imaginario;
-};
+};  
 
 struct num_complexo modulo_complexo(struct num_complexo x) {
 
