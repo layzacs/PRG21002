@@ -208,7 +208,7 @@ int remove_user(char *user_n){
       user[i].bloqueio = 0;
       //printf("user[%d].name = \n", i, user[i].name);  /*linha pra debug*/
       printf("O usuário %s foi excluído.\n", user_n);
-      // após modificar o valor da variavel user.nae, o valor é salvo no arquivo usando a função
+      // após modificar o valor da variavel user.name, o valor é salvo no arquivo usando a função
       write_db();
       exit(0);
     }
@@ -244,7 +244,7 @@ int edit_user(char *user_n){
       scanf("%d", &num);
 
       switch (num){
-        // Edita a senha do usuario
+        // Edita a senha do usuário
         case 1:
         printf("Digite o novo nome: \n");
         fflush(stdin);
@@ -436,7 +436,7 @@ int login(char *name, char *passwd) {
         break;
       }
 
-      // se nome e senha forem iguais aos valores inicializados ou adicionados pelo administrador, mosra imagem de login e garante acesso.
+      // se nome e senha forem iguais aos valores inicializados ou adicionados pelo administrador, mostra mensagem de login e garante acesso.
       if ((strcmp(user[i].name, name) == 0) && (strcmp(user[i].passwd, passwd) == 0) && user[i].bloqueio>0) {
         printf("%s\n", user[i].msg_logon);
         strcpy(user_grupo, user[i].grupo);
