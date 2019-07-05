@@ -8,16 +8,17 @@
 // Date created      : 20190702
 //
 // Purpose           : Programa de autenticação de usuários, salvando seus dados em um arquivo externo, com funções administrativas.
+//
 //                     Funcionalidades
-//                     - O ADM pode editar os campos, excluir, e adicionar novos usuários.
-//                     - Sistema de bloqueio quando o usuário faz três tentativas erradas de fazer login no sistema
+//                     - O ADM pode editar os campos, excluir, desbloquear e adicionar novos usuários.
+//                     - Sistema de bloqueio quando o usuário faz três tentativas erradas de fazer login no sistema.
 //                     - O sistema usa o horário do computador/servidor para limitar o acesso de três grupos: aluno, professor e visitante.
 //
+//                     Os dados dos usuários são salvos no arquivo database.dat.
+//                     Para aumentar o número de usuários do sistema é necessário adicionar o mesmo número de linhas no arquivo database.dat, no formato:
+//                     null:null:null:null:null:null:null:0
 //
-//
-//
-//
-//
+//                     Os horários de acesso de cada um dos grupos pode ser editado no código da função give_access().
 //
 // Revision History  :
 //
@@ -35,10 +36,10 @@
 //**********************************************************************;
 // definindo valores para fácil customização do código
 #define TAM_NAME 30
-#define TAM_PASSWD 10
+#define TAM_PASSWD 7
 #define TAM_GRUPO 20
 #define TAM_MSG 50
-#define NUM_USERS 4
+#define NUM_USERS 5
 
 
 //*********************************************************************;
@@ -59,6 +60,7 @@ struct user admin = {"admin", "admin", "admin", "Bem vindo Administrador", "null
 
 // cria variável vetor onde cada uma das posições possui todas as "caixas" da estrutura. É possível ver os usuários criados no arquivo database.txt.
 struct user user[NUM_USERS];
+
 
 //***********************Início funções**********************************;
 
@@ -112,7 +114,6 @@ void write_db() {
      fprintf (database, " %s:%s:%s:%s:%s:%s:%s:%d\n", user[i].name, user[i].passwd,  user[i].grupo, user[i].msg_logon, user[i].nascimento, user[i].name_pai, user[i].name_mae, user[i].bloqueio);
   }
   fclose(database);
-  exit(-1);
 }
 
 // Função para simular acesso a sala, fazendo o teste de horário para cada usuário, dependendo de seu grupo.
@@ -145,15 +146,43 @@ int give_access(char *user_grupo) {
 }
 
 // func responsavel por desbloquear usuario, mudando o valor de bloqueio de 0 para 3
-int unblck_user(char *user_n) {
-  int i=0;
-  while(i<NUM_USERS){
-    if ((strcmp(user[i].name, user_n) == 0)) {
-      user[i].bloqueio = 3;
-      printf("O usuário %s foi desbloqueado", user_n);
-      write_db();
+int unblck_user() {
+  int i=0, j=0, k=0;
+  char user_n[TAM_NAME];
+
+  printf("Usuário(s) bloqueado(s):\n");
+  // Loop para varrer os usuários e mostrar aqueles que estão bloqueados.
+  for(i=0;i<NUM_USERS;i++) {
+    if ((user[i].bloqueio == 0) && (strcmp(user[i].name, "null") != 0)) {
+      printf("%s\n", user[i].name);
+      k++;
     }
-  i++;
+  }
+
+  // Se o if do loop acima não for percorrido nem uma vez, a variável k continua valendo 0, quer dizer que não há usuários bloqueados no database.
+  if (k==0) {
+    printf("Não há usuários bloqueados. Fechando o sistema...\n");
+    exit(-1);
+  }
+
+  insere_user:
+  j=0;
+  printf("Digite o nome do usuário a ser desbloqueado:\n");
+  scanf(" %[^\n]", &user_n);
+
+  while(j<NUM_USERS) {
+    if ((strcmp(user[j].name, user_n) == 0) && (user[j].bloqueio != 0)) {
+      printf("Erro: O usuário %s não está bloqueado! Insira um usuário válido.\n", user_n);
+      // goto para voltar exatamente para o momento de colocar o nome de usuário a ser desbloqueado.
+      goto insere_user;
+    }
+    if ((strcmp(user[j].name, user_n) == 0) && (user[j].bloqueio == 0)) {
+      user[j].bloqueio = 3;
+      printf("O usuário %s foi desbloqueado.\n", user[j].name);
+      write_db();
+      exit(-1);
+    }
+  j++;
   }
 }
 
@@ -161,6 +190,12 @@ int unblck_user(char *user_n) {
 int remove_user(char *user_n){
   int i=0;
   while(i<NUM_USERS){
+
+    // Inserido o if abaixo para não permitir que o admin remova um campo "null".
+    if (strcmp(user_n, "null") == 0) {
+      printf("Este não é um usuário válido. Fechando o sistema...\n");
+      exit(-1);
+    }
     if ((strcmp(user[i].name, user_n) == 0)) {
       // sprintf é a função responsável por trocar o valor da string user.name do nome anterior para o valor 0.
       sprintf(user[i].name, "%s", "null");
@@ -172,7 +207,7 @@ int remove_user(char *user_n){
       sprintf(user[i].name_mae, "%s", "null");
       user[i].bloqueio = 0;
       //printf("user[%d].name = \n", i, user[i].name);  /*linha pra debug*/
-      printf("O usuário %s foi excluido\n", user_n);
+      printf("O usuário %s foi excluído.\n", user_n);
       // após modificar o valor da variavel user.nae, o valor é salvo no arquivo usando a função
       write_db();
       exit(0);
@@ -186,6 +221,12 @@ int remove_user(char *user_n){
 //func responsavel por editar usuario
 int edit_user(char *user_n){
   int i=0;
+
+  // Inserido o if abaixo para não permitir que o admin edite campos "null".
+  if (strcmp(user_n, "null") == 0) {
+    printf("Este não é um usuário válido. Fechando o sistema...\n");
+    exit(-1);
+  }
 
   char new_name[TAM_NAME];
   char new_pass[TAM_PASSWD];
@@ -213,14 +254,16 @@ int edit_user(char *user_n){
         printf("Novo nome: %s\n", user[i].name);
         printf("Nome Gravado.\n");
         write_db();
+        exit(-1);
 
         case 2:
-        printf("Digite a nova senha: \n");
+        printf("Digite a nova senha: (máximo de 6 caracteres)\n");
         scanf(" %[^\n]", &new_pass);
         strcpy(user[i].passwd, new_pass);
         printf("Nova senha: %s\n", user[i].passwd);
         printf("Senha Gravada.\n");
         write_db();
+        exit(-1);
 
         // Edita o grupo
         case 3:
@@ -229,6 +272,7 @@ int edit_user(char *user_n){
         strcpy(user[i].grupo, new_group);
         printf("Grupo Alterado.\n");
 	      write_db();
+        exit(-1);
 
         // Edita a Mensagem
         case 4:
@@ -237,7 +281,7 @@ int edit_user(char *user_n){
         strcpy(user[i].msg_logon, new_msg);
         printf("Mensagem Alterada.\n");
         write_db();
-
+        exit(-1);
 
         // Edita a data de Nascimento
         case 5:
@@ -246,7 +290,7 @@ int edit_user(char *user_n){
         strcpy(user[i].nascimento, new_date);
         printf("Data Alterada.\n");
         write_db();
-
+        exit(-1);
 
         // Edita o nome do pai
         case 6:
@@ -255,7 +299,7 @@ int edit_user(char *user_n){
         strcpy(user[i].name_pai, new_namep);
         printf("Nome Alterado.\n");
         write_db();
-
+        exit(-1);
 
         // Edita o nome da mae
         case 7:
@@ -264,6 +308,7 @@ int edit_user(char *user_n){
         strcpy(user[i].name_mae, new_namem);
         printf("Nome Alterado.\n");
         write_db();
+        exit(-1);
       }
     }
     i++;
@@ -292,7 +337,7 @@ int add_user() {
       printf("Digite a senha do Usuario: \n");
       scanf(" %[^\n]", &new_pass);
       strcpy(user[i].passwd, new_pass);
-      printf("Digite o grupo do Usuario: \n");
+      printf("Digite o grupo do Usuario: (aluno, professor ou visitante)\n");
       scanf(" %[^\n]", &new_group);
       strcpy(user[i].grupo, new_group);
       printf("Digite a Mensagem de inicio: \n");
@@ -310,6 +355,7 @@ int add_user() {
 
       user[i].bloqueio = 3;
       write_db();
+      exit(-1);
     }
     i++;
   }
@@ -319,23 +365,19 @@ int tools_adm() {
   int num;
   char user_name[TAM_NAME];
 
-  printf("Opções:\n 1 - desbloquear usuário\n2 - criar novo usuário\n3 - excluir usuário\n4 - editar informações do usuário\n");
+  printf("Opções:\n1 - desbloquear usuário\n2 - criar novo usuário\n3 - excluir usuário\n4 - editar informações do usuário\n");
   scanf("%d", &num);
   fflush(stdin);
   switch (num) {
 
     // desbloqueia usuário mudando o valor de user[i].bloqueio para 3.
     case 1:
-
-    printf("Digite o nome do usuario que deseja desbloquear:\n");
-    scanf(" %[^\n]", &user_name);
-    fflush(stdin);
-    unblck_user(user_name);
+    unblck_user();
 
     // cria um novo usuário adicionando os valores no próximo espaço vazio da tabela user.
     case 2:
     printf("Digite o nome do usuario que deseja adicionar:\n");
-    //scanf("%s", &user_name);
+    scanf(" %[^\n]", &user_name);
     add_user();
 
     // exclui os dados de um usuário de seu local da tabela user.
@@ -356,7 +398,7 @@ int tools_adm() {
 }
 // func responsável por checar nome e senha dos usuários, apresentar a mensagem de boas vindas e permitir acesso a sala.
 int login(char *name, char *passwd) {
-  int i=0;
+  int i=0, j=0;
   char user_grupo[TAM_GRUPO];
 
   for (;;) {
@@ -370,7 +412,12 @@ int login(char *name, char *passwd) {
     fflush(stdin);
 
     // testa dados inseridos com os valores válidos de cada usuário
-    for (i=0;(i < NUM_USERS);(i++)) {
+    for (i=0;(i <= NUM_USERS);(i++)) {
+
+      // Quando o loop não encontrar nenhum usuário correspondente ao inserido pelo usuário (i=NUM_USERS já passou por todos os usuários) ele avisa que o usuário não está no sistema.
+      if (i == NUM_USERS) {
+        printf("Usuário não cadastrado.\n");
+      }
 
       // Se nome de usuário e senha são do admin, vai para a função de ferramentas do administrador
       if ((strcmp(admin.name, name) == 0) && (strcmp(admin.passwd, passwd) == 0)) {
@@ -384,8 +431,7 @@ int login(char *name, char *passwd) {
         break;
       }
 
-
-      if ((strcmp(user[i].name, name) == 0) && (user[i].bloqueio==0)) {
+      if ((strcmp(user[i].name, name) == 0) && (strcmp(user[i].name, "null") != 0) && (user[i].bloqueio==0)) {
         printf("O usuário %s está bloqueado. Entre em contato com o administrador do sistema.\n", name);
         break;
       }
@@ -399,7 +445,14 @@ int login(char *name, char *passwd) {
 
       // se nome é igual mas senha é diferente, o usuário perde um ponto na var. bloqueio. Quando a var. chega a zero, ele é bloqueado.
       if ((strcmp(user[i].name, name) == 0) && (strcmp(user[i].passwd, passwd) != 0) && user[i].bloqueio>0) {
+        if (user[i].bloqueio == 1) {
+          user[i].bloqueio--;
+          write_db();
+          printf("Você excedeu o número de tentativas. O usuário %s foi bloqueado.\n", name);
+          break;
+        }
         user[i].bloqueio--;
+        write_db();
         printf("%d\n", user[i].bloqueio);
         printf("Senha Incorreta. Você tem mais %d tentativas.\n", user[i].bloqueio);
         break;
@@ -417,7 +470,7 @@ int main(void) {
   usuarios = (int *) malloc(sizeof(int));
   *usuarios = NUM_USERS;
 
-  printf("Numero de usuários cadastrados: %d\n", *usuarios);
+  printf("Numero máximo de usuários do sistema: %d\n", *usuarios);
   // função read_db pega os dados dos usuários do arquivo e salva no formato da struct
   read_db();
 
